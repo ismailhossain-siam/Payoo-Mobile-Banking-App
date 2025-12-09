@@ -4,6 +4,8 @@ document.getElementById("log-out").addEventListener("click", function(){
 
 
 const validPin = 1122 ;
+const transactionData= []
+
 document.getElementById("add-money-btn").addEventListener("click", function(event){
     event.preventDefault()
     const bank = document.getElementById("select-bank").value
@@ -27,6 +29,13 @@ document.getElementById("add-money-btn").addEventListener("click", function(even
     
     const totalAvailableBalance =  availableBalance +  amount
     document.getElementById("available-balance").innerText = totalAvailableBalance
+
+    const data ={
+        name:"add-money",
+        date:new Date().toLocaleTimeString()
+    }
+
+    transactionData.push(data)
 
 })
 
@@ -53,7 +62,13 @@ document.getElementById("withdraw-btn").addEventListener("click", function(event
     
     const newAvailableBalance =  availableBalance -  amount
     document.getElementById("available-balance").innerText = newAvailableBalance
+    
+     const data ={
+        name:"cash-out",
+        date:new Date().toLocaleTimeString()
+    }
 
+    transactionData.push(data)
 })
 
 //Transfer money
@@ -81,6 +96,12 @@ document.getElementById("sendNow-btn").addEventListener("click", function(event)
     const newAvailableBalance =  availableBalance -  amount
     document.getElementById("available-balance").innerText = newAvailableBalance
 
+    const data ={
+        name:"transfer-money",
+        date:new Date().toLocaleTimeString()
+    }
+
+    transactionData.push(data)
 })
 
 // pay bill
@@ -109,8 +130,41 @@ document.getElementById("pay-bill-btn").addEventListener("click", function(event
     const totalAvailableBalance =  availableBalance - amount
     document.getElementById("available-balance").innerText = totalAvailableBalance
 
+     const data ={
+        name:"pay-bill",
+        date:new Date().toLocaleTimeString()
+    }
+
+    transactionData.push(data)
 })
 
+
+document.getElementById("transaction-button").addEventListener("click",function(){
+    const transactionContainer = document.getElementById("transaction-container")
+    transactionContainer.innerText = ""
+
+    for(const data of transactionData){
+        const div = document.createElement("div")
+        div.innerHTML=`
+        <div class="bg-white rounded-xl p-3 flex justify-between items-center mt-2">
+            <div class="flex items-center">
+             <div class="p-3 rounded-full bg-[#f4f5f7]">
+                <img src="./assets/send1.png" alt="">
+            </div>
+            <div class="ml-3">
+                <h1>${data.name}</h1>
+                <p>${data.date}</p>
+            </div>
+           </div>
+           <i class="fa-solid fa-ellipsis rotate-90"></i>
+           </div>
+
+           </div>
+        </div>
+        `
+        transactionContainer.appendChild(div)
+    }
+} )
 
 
 
@@ -182,7 +236,7 @@ function handleToggle(id){
     }
 
     // যদি transaction হয় flex রাখবে, নয়তো block
-    document.getElementById(id).style.display = (id === "transaction") ? "flex" : "block";
+    document.getElementById(id).style.display = "block";
 }
 
 
